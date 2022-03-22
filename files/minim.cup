@@ -78,9 +78,34 @@ non terminal DeclNode         decl;
 non terminal VarDeclNode      varDecl;
 non terminal TypeNode         type;
 non terminal IdNode           id;
+non terminal LinkedList       varDeclList;
+non terminal FnDeclNode       fnDecl;
+non terminal StructDeclNode   structDecl;
+non terminal LinkedList/*StructBodyNode*/ structBody;
+non terminal FormalsListNode/*FormalsNode*/ formals;
+non terminal LinkedList       formalsList;
+non terminal FormalDeclNode   formalDecl;
+non terminal FnBodyNode       fnBody;
+non terminal LinkedList       stmtList;
+non terminal StmtNode         stmt;
+non terminal AssignExpNode    assignExp;
+non terminal ExpNode          exp;
+non terminal ExpNode/*TermNode*/ term;
+non terminal CallExpNode/*FncallNode*/ fncall;
+non terminal LinkedList       actualList;
+non terminal ExpNode/*LocNode*/ loc;
  
  
 /* NOTE: Add precedence and associativity declarations here */
+precedence right ASSIGN;
+precedence left OR;
+precedence left AND;
+precedence nonassoc LESS, GREATER, LESSEQ, GREATEREQ, EQUALS, NOTEQUALS;
+precedence left PLUS, MINUS;
+precedence left TIMES, DIVIDE;
+precedence left NOT;
+/* TODO: maybe include MINUS in highest precedence for unary operator? */
+/* TODO: maybe include DOT in highest precedence? */
 
 
 start with program;
@@ -121,6 +146,86 @@ type            ::= INT
 
 id              ::= ID:i
                 {: RESULT = new IdNode(i.lineNum, i.charNum, i.idVal);
+                :}
+                ;
+
+varDeclList     ::=
+                {: RESULT = ;
+                :}
+                ;
+
+fnDecl          ::=
+                {: RESULT = ;
+                :}
+                ;
+
+structDecl      ::=
+                {: RESULT = ;
+                :}
+                ;
+
+structBody      ::=
+                {: RESULT = ;
+                :}
+                ;
+
+formals         ::=
+                {: RESULT = ;
+                :}
+                ;
+
+formalsList     ::=
+                {: RESULT = ;
+                :}
+                ;
+
+formalDecl      ::=
+                {: RESULT = ;
+                :}
+                ;
+
+fnBody          ::=
+                {: RESULT = ;
+                :}
+                ;
+
+stmtList        ::=
+                {: RESULT = ;
+                :}
+                ;
+
+stmt            ::=
+                {: RESULT = ;
+                :}
+                ;
+
+assignExp       ::=
+                {: RESULT = ;
+                :}
+                ;
+
+exp             ::=
+                {: RESULT = ;
+                :}
+                ;
+
+term            ::=
+                {: RESULT = ;
+                :}
+                ;
+
+fncall          ::=
+                {: RESULT = ;
+                :}
+                ;
+
+actualList      ::=
+                {: RESULT = ;
+                :}
+                ;
+
+loc             ::=
+                {: RESULT = ;
                 :}
                 ;
 				

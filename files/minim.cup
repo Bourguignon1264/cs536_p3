@@ -138,6 +138,7 @@ decl            ::= varDecl:v
                 | structDecl:s
                 {: RESULT = s;
                 :}
+
                 ;
 
 varDecl         ::= type:t id:i SEMICOLON
@@ -271,28 +272,105 @@ assignExp       ::= loc:l ASSIGN exp:e
                 :}
                 ;
 
-exp             ::=
-                {: RESULT = ;
+exp             ::= assignExp:a
+                {: RESULT = a;
+                :}
+                | exp:e1 PLUS exp:e2
+                {: RESULT = new PlusNode(e1,e2);
+                :}
+                | exp:e1 MINUS exp:e2
+                {: RESULT = new MinusNode(e1,e2);
+                :}
+                | exp:e1 TIMES exp:e2
+                {: RESULT = new TimesNode(e1,e2);
+                :}
+                | exp:e1 DIVIDE exp:e2
+                {: RESULT = new DivideNode(e1,e2);
+                :}
+                | NOT exp:e1
+                {: RESULT = new NotNode(e1);
+                :}
+                | exp:e1 AND exp:e2
+                {: RESULT = new AndNode(e1,e2);
+                :}
+                | exp:e1 OR exp:e2
+                {: RESULT = new OrNode(e1,e2);
+                :}
+                | exp:e1 EQUALS exp:e2
+                {: RESULT = new EqualsNode(e1,e2);
+                :}
+                | exp:e1 NOTEQUALS exp:e2
+                {: RESULT = new NotEqualsNode(e1,e2);
+                :}
+                | exp:e1 LESS exp:e2
+                {: RESULT = new LessNode(e1,e2);
+                :}
+                | exp:e1 GREATER exp:e2
+                {: RESULT = new GreaterNode(e1,e2);
+                :}
+                | exp:e1 LESSEQ exp:e2
+                {: RESULT = new LessEqNode(e1,e2);
+                :}
+                | exp:e1 GREATEREQ exp:e2
+                {: RESULT = new GreaterEqNode(e1,e2);
+                :}
+                | MINUS exp:e1
+                {: RESULT = new UnaryMinusNode(e1);
+                :}
+                | term:t
+                {: RESULT = t;
                 :}
                 ;
 
-term            ::=
-                {: RESULT = ;
+term            ::= loc:l
+                {: RESULT = l;
+                :}
+                | INTLITERAL:i
+                {: RESULT = new IntLitNode(i.lineNum, i.charNum, i.intVal);
+                :}
+                | STRINGLITERAL:s
+                {: RESULT = new StringLitNode(s.lineNum, s.charNum, s.strVal);
+                :}
+                | TRUE:t
+                {: RESULT = new TrueNode(t.lineNum, t.charNum);
+                :}
+                | FALSE:f
+                {: RESULT = new FalseNode(f.lineNum, f.charNum);
+                :}
+                | LPAREN exp:e RPAREN
+                {: RESULT = e;
+                :}
+                | fncall:f
+                {: RESULT = f;
                 :}
                 ;
 
-fncall          ::=
-                {: RESULT = ;
+fncall          ::= id:i LPAREN RPAREN
+                {: RESULT = new CallExpNode(i, null);
+                :}
+                | id:i LPAREN actuallist:a RPAREN
+                {: RESULT = new CallExpNode(i, new ExpListNode(a));
                 :}
                 ;
 
-actualList      ::=
-                {: RESULT = ;
+actualList      ::= exp:e
+                {:
+                LinkedList<ExpNode> list = new LinkedList<>();
+                list.addLast(e);
+                RESULT = list;
+                :}
+                | actualList:a COMMA exp:e
+                {:
+                a.addLast(e);
+                RESULT = a;
                 :}
                 ;
 
-loc             ::=
-                {: RESULT = ;
+loc             ::= id:i
+                {: RESULT = i;
+                :}
+                | loc:l DOT id:i
+                {: RESULT = new DotAccessExpNode(l,i);
                 :}
                 ;
 				

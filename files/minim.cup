@@ -132,15 +132,30 @@ declList        ::= declList:dl decl:d
 decl            ::= varDecl:v
                 {: RESULT = v;
                 :}
+                | fnDecl:f
+                {: RESULT = f;
+                :}
+                | structDecl:s
+                {: RESULT = s;
+                :}
                 ;
 
 varDecl         ::= type:t id:i SEMICOLON
                 {: RESULT = new VarDeclNode(t, i, VarDeclNode.NOT_STRUCT);
                 :}
+                | STRUCT id:j id:i SEMICOLON
+                {: RESULT = new VarDeclNode(new StructNode(j), i, 0);
+                :}
                 ;
 
 type            ::= INT
                 {: RESULT = new IntNode();
+                :}
+                | BOOL
+                {: RESULT = new BoolNode();
+                :}
+                | VOID
+                {: RESULT = new VoidNode();
                 :}
                 ;
 
@@ -149,58 +164,110 @@ id              ::= ID:i
                 :}
                 ;
 
-varDeclList     ::=
-                {: RESULT = ;
+varDeclList     ::= varDeclList:l varDecl:d
+                {: l.addLast(d);
+                   RESULT = l;
+                :}
+                | /* epsilon */
+                {: RESULT = new LinkedList<DeclNode>();
                 :}
                 ;
 
-fnDecl          ::=
-                {: RESULT = ;
+fnDecl          ::= type:t id:i formals:f fnBody:b
+                {: RESULT = new FnDeclNode(t, i, f, b);
                 :}
                 ;
 
-structDecl      ::=
-                {: RESULT = ;
+structDecl      ::= STRUCT id:i LCURLY structBody:b RCURLY SEMICOLON
+                {: RESULT = new StructDeclNode(i, new DeclListNode(b));
                 :}
                 ;
 
-structBody      ::=
-                {: RESULT = ;
+structBody      ::= structBody:b varDecl:v
+                {: b.addLast(v);
+                   RESULT = b;
+                :}
+                | varDecl:v
+                {: RESULT = new LinkedList<>();
+                   RESULT.addLast(v);
                 :}
                 ;
 
-formals         ::=
-                {: RESULT = ;
+formals         ::= LPAREN RPAREN
+                {: RESULT = new FormalsListNode(new LinkedList<>());
+                :}
+                | LPAREN formalsList:l RPAREN
+                {: RESULT = new FormalsListNode(l);
                 :}
                 ;
 
-formalsList     ::=
-                {: RESULT = ;
+formalsList     ::= formalDecl:d
+                {: LinkedList<FormalDeclNode> l = new LinkedList<>();
+                   l.addLast(d); // TODO: maybe addFirst()??
+                   RESULT = l;
+                :}
+                | formalDecl:d COMMA formalsList:l
+                {: l.addLast(d); // TODO: maybe addFirst()??
+                   RESULT = l;
                 :}
                 ;
 
-formalDecl      ::=
-                {: RESULT = ;
+formalDecl      ::= type:t id:i // No struct parameters
+                {: RESULT = new FormalDeclNode(t,i);
                 :}
                 ;
 
-fnBody          ::=
-                {: RESULT = ;
+fnBody          ::= LCURLY varDeclList:v stmtList:s RCURLY
+                {: RESULT = new FnBodyNode(new DeclListNode(v), new StmtListNode(s));
                 :}
                 ;
 
-stmtList        ::=
-                {: RESULT = ;
+stmtList        ::=stmtList:l stmt:s
+                {: sl.addLast(s);
+                   RESULT = sl;
+                :}
+                | /* epsilon */
+                {: RESULT = new LinkedList<StmtNode>();
                 :}
                 ;
 
-stmt            ::=
-                {: RESULT = ;
+stmt            ::= assignExp:a SEMICOLON
+                {: RESULT = new AssignStmtNode(a);
+                :}
+                | loc:l PLUSPLUS SEMICOLON
+                {: RESULT = new PostIncStmtNode(l);
+                :}
+                | loc:l MINUSMINUS SEMICOLON
+                {: RESULT = new PostDecStmtNode(l);
+                :}
+                | INPUT READ loc:l SEMICOLON
+                {: RESULT = new ReadStmtNode(l);
+                :}
+                | DISP WRITE exp:e SEMICOLON
+                {: RESULT = new WriteStmtNode(e);
+                :}
+                | IF exp:e LCURLY varDeclList:v stmtList:s RCURLY
+                {: RESULT = new IfStmtNode(e, new DeclListNode(v), new StmtListNode(s));
+                :}
+                | IF exp:e LCURLY varDeclList:v stmtList:s RCURLY ELSE LCURLY varDeclList:w stmtList:t RCURLY
+                {: RESULT = new IfElseStmtNode(e, new DeclListNode(v), new StmtListNode(s), new DeclListNode(w), new StmtListNode(t));
+                :}
+                | WHILE exp:e LCURLY varDeclList:v stmtList:s RCURLY
+                {: RESULT = new WhileStmtNode(e, new DeclListNode(v), new StmtListNode(s));
+                :}
+                | RETURN exp:e SEMICOLON
+                {: RESULT = new ReturnStmtNode(e);
+                :}
+                | RETURN SEMICOLON
+                {: RESULT = new ReturnStmtNode(NULL);
+                :}
+                | fncall:f SEMICOLON
+                {: RESULT = new CallStmtNode(f);
                 :}
                 ;
 
-assignExp       ::=
-                {: RESULT = ;
+assignExp       ::= loc:l ASSIGN exp:e
+                {: RESULT = new AssignExpNode(l, e);
                 :}
                 ;
 

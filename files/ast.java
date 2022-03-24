@@ -173,6 +173,11 @@ class FnBodyNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        int i = 4;
+        p.print(" {\n");
+        myDeclList.unparse(p, indent + i);
+        myStmtList.unparse(p, indent + i);
+        p.print("}\n");
     }
 
     // two kids
@@ -186,6 +191,10 @@ class StmtListNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        for (int i = 0; i < myStmts.size(); i++) {
+            addIndent(p, indent);
+            stmt.unparse(p, indent);
+        }
     }
 
     // list of kids (StmtNodes)
@@ -198,6 +207,18 @@ class ExpListNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        boolean first = true;
+        for (int i = 0; i < myExps.size(); i++) {
+            if (first == true) {
+                first = false;
+            }
+
+            else {
+                p.print(", ");
+            }
+
+            expNode.unparse(p, indent);
+        }
     }
 
     // list of kids (ExpNodes)
@@ -289,7 +310,7 @@ class StructDeclNode extends DeclNode {
         int i = 4;
         p.print("method?? ");//TODO
         myId.unparse(p, indent);
-        p.println(" {");
+        p.print(" {\n");
         myDeclList.unparse(p, indent + i);
         p.print("};\n");
     }

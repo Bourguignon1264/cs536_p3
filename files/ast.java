@@ -287,7 +287,7 @@ class StructDeclNode extends DeclNode {
 
     public void unparse(PrintWriter p, int indent) {
         int i = 4;
-        p.print("struct ");
+        p.print("method?? ");//TODO
         myId.unparse(p, indent);
         p.println(" {");
         myDeclList.unparse(p, indent + i);

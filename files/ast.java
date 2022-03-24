@@ -416,11 +416,12 @@ class IfStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        int i = 4;
         p.print("if (");
         myExp.unparse(p, indent);
         p.print(") {\n");
-        myDeclList.unparse(p, indent + 4);
-        myStmtList.unparse(p, indent + 4);
+        myDeclList.unparse(p, indent + i);
+        myStmtList.unparse(p, indent + i);
         doIndent(p, indent);
         p.print("}\n");
     }
@@ -443,17 +444,18 @@ class IfElseStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        int i = 4;
         p.print("if (");
         myExp.unparse(p, indent);
         p.print(") {\n");
-        myThenDeclList.unparse(p, indent + 4);
-        myThenStmtList.unparse(p, indent + 4);
+        myThenDeclList.unparse(p, indent + i);
+        myThenStmtList.unparse(p, indent + i);
         doIndent(p, indent);
         p.print("}\n");
         doIndent(p, indent);
         p.print("else {\n");
-        myElseDeclList.unparse(p, indent + 4);
-        myElseStmtList.unparse(p, indent + 4);
+        myElseDeclList.unparse(p, indent + i);
+        myElseStmtList.unparse(p, indent + i);
         doIndent(p, indent);
         p.print("}\n");
     }
@@ -474,11 +476,12 @@ class WhileStmtNode extends StmtNode {
     }
 	
     public void unparse(PrintWriter p, int indent) {
+        int i = 4;
         p.print("while (");
         myExp.unparse(p, indent);
         p.print(") {\n");
-        myDeclList.unparse(p, indent + 4);
-        myStmtList.unparse(p, indent + 4);
+        myDeclList.unparse(p, indent + i);
+        myStmtList.unparse(p, indent + i);
         doIndent(p, indent);
         p.print("}\n");
     }

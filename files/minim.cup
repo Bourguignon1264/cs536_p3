@@ -213,7 +213,7 @@ formalsList     ::= formalDecl:d
                 :}
                 ;
 
-formalDecl      ::= type:t id:i // No struct parameters
+formalDecl      ::= type:t id:i
                 {: RESULT = new FormalDeclNode(t,i);
                 :}
                 ;

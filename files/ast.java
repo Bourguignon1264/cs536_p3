@@ -223,7 +223,7 @@ class VarDeclNode extends DeclNode {
         myType.unparse(p, 0);
         p.print(" ");
         myId.unparse(p, 0);
-        p.println(";");
+        p.print(";\n");
     }
 
     // three kids
@@ -246,6 +246,13 @@ class FnDeclNode extends DeclNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        myType.unparse(p, indent);
+        p.print(" ");
+        myId.unparse(p, indent);
+        p.print("(");
+        myFormalsList.unparse(p, indent);
+        p.print(")\n");
+        myBody.unparse(p,indent);
     }
 
     // 4 kids
@@ -262,6 +269,9 @@ class FormalDeclNode extends DeclNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        myType.unparse(p, indent);
+        p.print(" ");
+        myId.unparse(p, indent);
     }
 
     // two kids
@@ -276,6 +286,12 @@ class StructDeclNode extends DeclNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        int i = 4;
+        p.print("struct ");
+        myId.unparse(p, indent);
+        p.println(" {");
+        myDeclList.unparse(p, indent + i);
+        p.print("};\n");
     }
 
     // two kids

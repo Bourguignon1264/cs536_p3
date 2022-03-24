@@ -402,6 +402,13 @@ class IfStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        p.print("if (");
+        myExp.unparse(p, indent);
+        p.print(") {\n");
+        myDeclList.unparse(p, indent + 4);
+        myStmtList.unparse(p, indent + 4);
+        addIndent(p, indent);
+        p.print("}\n");
     }
 
     // three kids
@@ -422,6 +429,19 @@ class IfElseStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        p.print("if (");
+        myExp.unparse(p, indent);
+        p.print(") {\n");
+        myThenDeclList.unparse(p, indent + 4);
+        myThenStmtList.unparse(p, indent + 4);
+        addIndent(p, indent);
+        p.print("}\n");
+        addIndent(p, indent);
+        p.print("else {\n");
+        myElseDeclList.unparse(p, indent + 4);
+        myElseStmtList.unparse(p, indent + 4);
+        addIndent(p, indent);
+        p.print("}\n");
     }
 
     // 5 kids
@@ -440,6 +460,13 @@ class WhileStmtNode extends StmtNode {
     }
 	
     public void unparse(PrintWriter p, int indent) {
+        p.print("while (");
+        myExp.unparse(p, indent);
+        p.print(") {\n");
+        myDeclList.unparse(p, indent + 4);
+        myStmtList.unparse(p, indent + 4);
+        addIndent(p, indent);
+        p.print("}\n");
     }
 
     // three kids
@@ -454,6 +481,8 @@ class CallStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        myCall.unparse(p, indent);
+        p.print(";\n");
     }
 
     // one kid
@@ -466,6 +495,13 @@ class ReturnStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        p.print("return");
+        if (myExp != null) {
+            p.print(" ");
+            myExp.unparse(p, indent);
+        }
+
+        p.print(";\n");
     }
 
     // one kid
@@ -566,7 +602,7 @@ class DotAccessExpNode extends ExpNode {
         myLoc.unparse(p, indent);
         p.print(".");
         myId.unparse(p, indent);
-        p.printf(")");
+        p.print(")");
     }
 
     // two kids

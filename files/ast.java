@@ -617,7 +617,7 @@ class CallExpNode extends ExpNode {
     public void unparse(PrintWriter p, int indent) {
         myId.unparse(p, indent);
         p.print("(");
-        if (myExpList != NULL) {
+        if (myExpList != null) {
             myExpList.unparse(p, indent);
         }
         p.print(")");

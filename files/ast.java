@@ -194,8 +194,8 @@ class StmtListNode extends ASTnode {
 
     public void unparse(PrintWriter p, int indent) {
         for (int i = 0; i < myStmts.size(); i++) {
-            addIndent(p, indent);
-            stmt.unparse(p, indent);
+            doIndent(p, indent);
+            myStmts.get(i).unparse(p, indent);
         }
     }
 
@@ -219,7 +219,7 @@ class ExpListNode extends ASTnode {
                 p.print(", ");
             }
 
-            expNode.unparse(p, indent);
+            myExps.get(i).unparse(p, indent);
         }
     }
 

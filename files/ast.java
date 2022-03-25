@@ -161,7 +161,15 @@ class FormalsListNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-        //TODO
+        int i = 0;
+        myFormals.get(0).unparse(p, indent);
+        ++i;
+        while(i < myFormals.size()){
+            p.print(", ");
+            myFormals.get(i).unparse(p,indent);
+            ++i;
+        }
+
     }
 
     // list of kids (FormalDeclNodes)
@@ -310,7 +318,7 @@ class StructDeclNode extends DeclNode {
 
     public void unparse(PrintWriter p, int indent) {
         int i = 4;
-        p.print("method?? ");//TODO
+        p.print("struct ");
         myId.unparse(p, indent);
         p.print(" {\n");
         myDeclList.unparse(p, indent + i);
@@ -427,7 +435,9 @@ class ReadStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-        //TODO
+        p.print("cin >> ");
+        myExp.unparse(p, indent);
+        p.print(";\n");
     }
 
     // one kid (actually can only be an IdNode or an ArrayExpNode)
@@ -440,7 +450,9 @@ class WriteStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-        //TODO
+        p.print("cout << ");
+        myExp.unparse(p, indent);
+        p.print(";\n");
     }
 
     // one kid

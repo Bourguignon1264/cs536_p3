@@ -162,12 +162,16 @@ class FormalsListNode extends ASTnode {
 
     public void unparse(PrintWriter p, int indent) {
         int i = 0;
-        myFormals.get(0).unparse(p, indent);
-        ++i;
-        while(i < myFormals.size()){
-            p.print(", ");
-            myFormals.get(i).unparse(p,indent);
+        try {
+            myFormals.get(0).unparse(p, indent);
             ++i;
+            while (i < myFormals.size()) {
+                p.print(", ");
+                myFormals.get(i).unparse(p, indent);
+                ++i;
+            }
+        }catch (Exception e) {
+            System.out.println("Error with FormalsListNode unparse");
         }
 
     }

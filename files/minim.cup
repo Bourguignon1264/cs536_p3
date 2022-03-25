@@ -224,8 +224,8 @@ fnBody          ::= LCURLY varDeclList:v stmtList:s RCURLY
                 ;
 
 stmtList        ::=stmtList:l stmt:s
-                {: sl.addLast(s);
-                   RESULT = sl;
+                {: l.addLast(s);
+                   RESULT = l;
                 :}
                 | /* epsilon */
                 {: RESULT = new LinkedList<StmtNode>();
@@ -260,7 +260,7 @@ stmt            ::= assignExp:a SEMICOLON
                 {: RESULT = new ReturnStmtNode(e);
                 :}
                 | RETURN SEMICOLON
-                {: RESULT = new ReturnStmtNode(NULL);
+                {: RESULT = new ReturnStmtNode(null);
                 :}
                 | fncall:f SEMICOLON
                 {: RESULT = new CallStmtNode(f);
@@ -332,10 +332,10 @@ term            ::= loc:l
                 {: RESULT = new StringLitNode(s.lineNum, s.charNum, s.strVal);
                 :}
                 | TRUE:t
-                {: RESULT = new TrueNode(t.lineNum, t.charNum);
+                {: RESULT = new TrueNode(t.linenum, t.charnum);
                 :}
                 | FALSE:f
-                {: RESULT = new FalseNode(f.lineNum, f.charNum);
+                {: RESULT = new FalseNode(f.linenum, f.charnum);
                 :}
                 | LPAREN exp:e RPAREN
                 {: RESULT = e;
@@ -348,7 +348,7 @@ term            ::= loc:l
 fncall          ::= id:i LPAREN RPAREN
                 {: RESULT = new CallExpNode(i, null);
                 :}
-                | id:i LPAREN actuallist:a RPAREN
+                | id:i LPAREN actualList:a RPAREN
                 {: RESULT = new CallExpNode(i, new ExpListNode(a));
                 :}
                 ;

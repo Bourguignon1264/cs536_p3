@@ -28,8 +28,8 @@ public void syntax_error(Symbol currToken) {
 terminal                INT;
 terminal                BOOL;
 terminal                VOID;
-terminal                TRUE;
-terminal                FALSE;
+terminal TokenVal       TRUE;
+terminal TokenVal       FALSE;
 terminal                STRUCT;
 terminal                INPUT;
 terminal                DISP;
@@ -204,11 +204,11 @@ formals         ::= LPAREN RPAREN
 
 formalsList     ::= formalDecl:d
                 {: LinkedList<FormalDeclNode> l = new LinkedList<>();
-                   l.addLast(d); // TODO: maybe addFirst()??
+                   l.addFirst(d);
                    RESULT = l;
                 :}
                 | formalDecl:d COMMA formalsList:l
-                {: l.addLast(d); // TODO: maybe addFirst()??
+                {: l.addFirst(d);
                    RESULT = l;
                 :}
                 ;
@@ -332,10 +332,10 @@ term            ::= loc:l
                 {: RESULT = new StringLitNode(s.lineNum, s.charNum, s.strVal);
                 :}
                 | TRUE:t
-                {: RESULT = new TrueNode(t.linenum, t.charnum);
+                {: RESULT = new TrueNode(t.lineNum, t.charNum);
                 :}
                 | FALSE:f
-                {: RESULT = new FalseNode(f.linenum, f.charnum);
+                {: RESULT = new FalseNode(f.lineNum, f.charNum);
                 :}
                 | LPAREN exp:e RPAREN
                 {: RESULT = e;

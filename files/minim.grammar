@@ -64,6 +64,8 @@ stmt            ::= assignExp SEMICOLON
 	
 assignExp       ::= loc ASSIGN exp
                 ;
+
+// TODO: SPLIT
 	
 exp             ::= assignExp
                 | exp PLUS exp
@@ -107,6 +109,7 @@ type            ::= INT
 	
 loc             ::= id
                 | loc DOT id
+                ;
 	
 id              ::= ID
                 ;
